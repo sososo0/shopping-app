@@ -3,9 +3,12 @@ package com.server.myselectshop.controller;
 import com.server.myselectshop.dto.ProductMypriceRequestDto;
 import com.server.myselectshop.dto.ProductRequestDto;
 import com.server.myselectshop.dto.ProductResponseDto;
+import com.server.myselectshop.repository.ProductRepository;
 import com.server.myselectshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductRepository productRepository;
 
     @PostMapping("/products")
     public ProductResponseDto createProduct(
@@ -27,5 +31,10 @@ public class ProductController {
             @RequestBody ProductMypriceRequestDto requestDto
     ) {
         return productService.updateProduct(id, requestDto);
+    }
+
+    @GetMapping("/products")
+    public List<ProductResponseDto> getProducts() {
+        return productService.getProducts();
     }
 }
