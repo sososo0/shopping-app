@@ -1,14 +1,12 @@
 package com.server.myselectshop.controller;
 
 import com.server.myselectshop.dto.FolderRequestDto;
+import com.server.myselectshop.dto.FolderResponseDto;
 import com.server.myselectshop.security.UserDetailsImpl;
 import com.server.myselectshop.service.FolderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +24,12 @@ public class FolderController {
     ) {
         List<String> folderNames = requestDto.getFolderNames();
         folderService.addFolders(folderNames, userDetails.getUser());
+    }
+
+    @GetMapping("/folders")
+    public List<FolderResponseDto> getFolders(
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        return folderService.getFolders(userDetails.getUser());
     }
 }
