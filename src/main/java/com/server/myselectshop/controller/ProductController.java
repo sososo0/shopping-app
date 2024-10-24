@@ -3,10 +3,10 @@ package com.server.myselectshop.controller;
 import com.server.myselectshop.dto.ProductMypriceRequestDto;
 import com.server.myselectshop.dto.ProductRequestDto;
 import com.server.myselectshop.dto.ProductResponseDto;
-import com.server.myselectshop.repository.ProductRepository;
 import com.server.myselectshop.security.UserDetailsImpl;
 import com.server.myselectshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +18,6 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
-    private final ProductRepository productRepository;
 
     @PostMapping("/products")
     public ProductResponseDto createProduct(
@@ -37,10 +36,20 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public List<ProductResponseDto> getProducts(
+    public Page<ProductResponseDto> getProducts(
+            @RequestParam("page") int page,
+            @RequestParam("size") int size,
+            @RequestParam("sortBy") String sortBy,
+            @RequestParam("isAsc") boolean isAsc,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        return productService.getProducts(userDetails.getUser());
+        return productService.getProducts(
+                userDetails.getUser(),
+                page-1,
+                size,
+                sortBy,
+                isAsc
+        );
     }
 
     @GetMapping("/admin/products")

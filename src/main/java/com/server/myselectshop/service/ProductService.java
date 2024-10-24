@@ -5,9 +5,14 @@ import com.server.myselectshop.dto.ProductRequestDto;
 import com.server.myselectshop.dto.ProductResponseDto;
 import com.server.myselectshop.entity.Product;
 import com.server.myselectshop.entity.User;
+import com.server.myselectshop.entity.UserRoleEnum;
 import com.server.myselectshop.naver.dto.ItemDto;
 import com.server.myselectshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,15 +48,26 @@ public class ProductService {
         return new ProductResponseDto(product);
     }
 
-    public List<ProductResponseDto> getProducts(User user) {
-        List<Product> productList = productRepository.findAllByUser(user);
-        List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
+    public Page<ProductResponseDto> getProducts(
+            User user,
+            int page,
+            int size,
+            String sortBy,
+            boolean isAsc
+    ) {
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
 
-        for (Product product : productList) {
-            productResponseDtoList.add(new ProductResponseDto(product));
+        UserRoleEnum userRole = user.getRole();
+        Page<Product> productList;
+        if (userRole == UserRoleEnum.USER) {
+            productList = productRepository.findAllByUser(user, pageable);
+        } else {
+            productList = productRepository.findAll(pageable);
         }
 
-        return productResponseDtoList;
+        return productList.map(ProductResponseDto::new); // Page 자체에서 map을 제공해준다.
     }
 
     @Transactional

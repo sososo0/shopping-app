@@ -36,4 +36,11 @@ public class User {
         this.email = requestDto.getEmail();
         this.role = role;
     }
+
+    public User(String robbie, String encode, String mail, UserRoleEnum userRoleEnum) {
+        this.username = robbie;
+        this.password = encode;
+        this.email = mail;
+        this.role = userRoleEnum;
+    }
 }
