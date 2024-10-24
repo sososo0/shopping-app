@@ -4,9 +4,9 @@ import com.server.myselectshop.dto.ProductMypriceRequestDto;
 import com.server.myselectshop.dto.ProductRequestDto;
 import com.server.myselectshop.dto.ProductResponseDto;
 import com.server.myselectshop.entity.Product;
+import com.server.myselectshop.entity.User;
 import com.server.myselectshop.naver.dto.ItemDto;
 import com.server.myselectshop.repository.ProductRepository;
-import jakarta.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +22,8 @@ public class ProductService {
 
     public static final int MIN_MY_PRICE = 100;
 
-    public ProductResponseDto createProduct(ProductRequestDto requestDto) {
-        Product product = productRepository.save(new Product(requestDto));
+    public ProductResponseDto createProduct(ProductRequestDto requestDto, User user) {
+        Product product = productRepository.save(new Product(requestDto, user));
         return new ProductResponseDto(product);
     }
 
@@ -43,8 +43,8 @@ public class ProductService {
         return new ProductResponseDto(product);
     }
 
-    public List<ProductResponseDto> getProducts() {
-        List<Product> productList = productRepository.findAll();
+    public List<ProductResponseDto> getProducts(User user) {
+        List<Product> productList = productRepository.findAllByUser(user);
         List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
 
         for (Product product : productList) {
@@ -61,5 +61,16 @@ public class ProductService {
         );
 
         product.updateByItemDto(itemDto);
+    }
+
+    public List<ProductResponseDto> getAllProducts() {
+        List<Product> productList = productRepository.findAll();
+        List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
+
+        for (Product product : productList) {
+            productResponseDtoList.add(new ProductResponseDto(product));
+        }
+
+        return productResponseDtoList;
     }
 }
