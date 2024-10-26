@@ -4,3 +4,8 @@ naver:
 
 admin:
     token: ${ADMIN_TOKEN}
+
+rest:
+  api:
+    key:
+      kakao: ${KAKAO_REST_API_KEY}

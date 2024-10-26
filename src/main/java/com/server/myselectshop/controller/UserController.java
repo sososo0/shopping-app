@@ -1,23 +1,26 @@
 package com.server.myselectshop.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.server.myselectshop.dto.SignupRequestDto;
 import com.server.myselectshop.dto.UserInfoDto;
 import com.server.myselectshop.entity.UserRoleEnum;
+import com.server.myselectshop.jwt.JwtUtil;
 import com.server.myselectshop.security.UserDetailsImpl;
 import com.server.myselectshop.service.FolderService;
+import com.server.myselectshop.service.KakaoService;
 import com.server.myselectshop.service.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,10 +32,29 @@ public class UserController {
 
     private final UserService userService;
     private final FolderService folderService;
+    private final KakaoService kakaoService;
+
+    @Value("${rest.api.key.kakao}")
+    private String KAKAO_REST_API_KEY;
 
     @GetMapping("/user/login-page")
-    public String loginPage() {
+    public String loginPage(Model model) {
+        model.addAttribute("restApiKey", KAKAO_REST_API_KEY);
         return "login";
+    }
+
+    @GetMapping("/user/kakao/callback")
+    public String kakaoLogin(
+        @RequestParam String code,
+        HttpServletResponse response
+    ) throws JsonProcessingException {
+        String jwt = kakaoService.kakaoLogin(code);
+
+        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwt);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
+        return "redirect:/";
     }
 
    @GetMapping("/user/signup")
