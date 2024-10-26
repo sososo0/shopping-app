@@ -30,6 +30,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRoleEnum role;
 
+    private Long kakaoId;
+
     public User(SignupRequestDto requestDto, UserRoleEnum role) {
         this.username = requestDto.getUsername();
         this.password = requestDto.getPassword();
@@ -37,10 +39,16 @@ public class User {
         this.role = role;
     }
 
-    public User(String robbie, String encode, String mail, UserRoleEnum userRoleEnum) {
+    public User(String robbie, String encode, String mail, UserRoleEnum userRoleEnum, Long kakaoId) {
         this.username = robbie;
         this.password = encode;
         this.email = mail;
         this.role = userRoleEnum;
+        this.kakaoId = kakaoId;
+    }
+
+    public User kakaoIdUpdate(Long kakaoId) {
+        this.kakaoId = kakaoId;
+        return this;
     }
 }
