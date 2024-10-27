@@ -23,13 +23,11 @@ public class UseTimeAop {
     private final ApiUseTimeRepository apiUseTimeRepository;
 
     @Pointcut("execution(* com.server.myselectshop.controller.ProductController.*(..))")
-    public void product() {}
-
+    private void product() {}
     @Pointcut("execution(* com.server.myselectshop.controller.FolderController.*(..))")
-    public void folder() {}
-
+    private void folder() {}
     @Pointcut("execution(* com.server.myselectshop.naver.controller.NaverApiController.*(..))")
-    public void naver() {}
+    private void naver() {}
 
     @Around("product() || folder() || naver()")
     public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -50,7 +48,7 @@ public class UseTimeAop {
             Authentication auth = SecurityContextHolder
                     .getContext()
                     .getAuthentication();
-            if (auth != null && auth.getPrincipal().getClass() == auth.getPrincipal()) {
+            if (auth != null && auth.getPrincipal().getClass() == UserDetailsImpl.class) {
                 // 로그인 회원 정보
                 UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
                 User loginUser = userDetails.getUser();
