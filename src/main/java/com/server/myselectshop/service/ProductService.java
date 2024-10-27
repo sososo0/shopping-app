@@ -51,6 +51,7 @@ public class ProductService {
         return new ProductResponseDto(product);
     }
 
+    @Transactional
     public Page<ProductResponseDto> getProducts(
             User user,
             int page,
