@@ -31,17 +31,19 @@ import java.util.UUID;
 public class KakaoService {
 
     private final PasswordEncoder passwordEncoder;
-    ;
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
 
-    @Value("${rest.api.key.kakao}")
+    @Value("${kakao.api-key}")
     private String KAKAO_REST_API_KEY;
 
-    public String kakaoLogin(String code) throws JsonProcessingException {
-    // 1. "인가 코드"로 "액세스 토큰" 요청
+    public String kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
+        // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getToken(code);
+        System.out.println("===================");
+        System.out.println(accessToken);
+        System.out.println("===================");
 
         // 2. 토큰으로 카카오 API 호출 : "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
         KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
@@ -50,15 +52,13 @@ public class KakaoService {
         User kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
 
         // 4. JWT 토큰 반환
-        String createToken =  jwtUtil.createToken(kakaoUser.getUsername(), kakaoUser.getRole());
+        String createToken = jwtUtil.createToken(kakaoUser.getUsername(), kakaoUser.getRole());
 
         return createToken;
     }
 
     private String getToken(String code) throws JsonProcessingException {
-
-        log.info(code);
-
+        // 요청 URL 만들기
         URI uri = UriComponentsBuilder
                 .fromUriString("https://kauth.kakao.com")
                 .path("/oauth/token")
@@ -73,7 +73,7 @@ public class KakaoService {
         // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
-        body.add("client_id", KAKAO_REST_API_KEY);
+        body.add("client_id", "dd9cfaf39b3212a8a6d2ad156ac45305");
         body.add("redirect_uri", "http://localhost:8080/api/user/kakao/callback");
         body.add("code", code);
 
@@ -94,9 +94,6 @@ public class KakaoService {
     }
 
     private KakaoUserInfoDto getKakaoUserInfo(String accessToken) throws JsonProcessingException {
-
-        log.info(accessToken);
-
         // 요청 URL 만들기
         URI uri = UriComponentsBuilder
                 .fromUriString("https://kapi.kakao.com")

@@ -39,12 +39,12 @@ public class User {
         this.role = role;
     }
 
-    public User(String robbie, String encode, String mail, UserRoleEnum userRoleEnum, Long kakaoId) {
-        this.username = robbie;
-        this.password = encode;
-        this.email = mail;
-        this.role = userRoleEnum;
-        this.kakaoId = kakaoId;
+    public User(String username, String password, String email, UserRoleEnum role, Long kakaoId) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.kakaoId =kakaoId;
     }
 
     public User kakaoIdUpdate(Long kakaoId) {

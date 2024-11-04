@@ -34,30 +34,28 @@ public class UserController {
     private final FolderService folderService;
     private final KakaoService kakaoService;
 
-    @Value("${rest.api.key.kakao}")
-    private String KAKAO_REST_API_KEY;
-
     @GetMapping("/user/login-page")
-    public String loginPage(Model model) {
-        model.addAttribute("restApiKey", KAKAO_REST_API_KEY);
+    public String loginPage() {
         return "login";
     }
 
     @GetMapping("/user/kakao/callback")
     public String kakaoLogin(
-        @RequestParam String code,
-        HttpServletResponse response
+            @RequestParam String code,
+            HttpServletResponse response
     ) throws JsonProcessingException {
-        String jwt = kakaoService.kakaoLogin(code);
+        // code: 카카오 서버로부터 받은 인가 코드 Service 전달 후 인증 처리 및 JWT 반환
+        String token = kakaoService.kakaoLogin(code, response);
 
-        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwt.substring(7));
+        // Cookie 생성 및 직접 브라우저에 Set
+        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token.substring(7));
         cookie.setPath("/");
         response.addCookie(cookie);
 
         return "redirect:/";
     }
 
-   @GetMapping("/user/signup")
+    @GetMapping("/user/signup")
     public String signupPage() {
         return "signup";
     }
@@ -68,8 +66,8 @@ public class UserController {
             BindingResult bindingResult
     ) {
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        if(fieldErrors.size() > 0) {
-            for(FieldError fieldError : fieldErrors) {
+        if (fieldErrors.size() > 0) {
+            for (FieldError fieldError : fieldErrors) {
                 log.error(fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage());
             }
             return "redirect:/api/user/signup";
@@ -83,7 +81,7 @@ public class UserController {
     @GetMapping("/user-info")
     @ResponseBody
     public UserInfoDto getUserInfo(
-        @AuthenticationPrincipal UserDetailsImpl userDetails
+            @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         String username = userDetails.getUser().getUsername();
         UserRoleEnum role = userDetails.getUser().getRole();

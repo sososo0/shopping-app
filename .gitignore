@@ -37,3 +37,6 @@ out/
 .vscode/
 
 .env
+
+src/main/resources/static
+src/main/resources/templates
