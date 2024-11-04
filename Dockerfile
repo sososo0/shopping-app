@@ -9,19 +9,17 @@ RUN apt-get update && \
 # 작업 디렉토리 설정
 WORKDIR /app
 
-# gradle 초기화
-RUN gradle init
+# 프로젝트 파일 복사
+COPY . .
 
-# gradle wrapper를 프로젝트에 추가
-RUN gradle wrapper
-
-# gradlew를 이용한 프로젝트 필드
+# gradlew에 실행 권한 부여
 RUN chmod +x gradlew
 
-# gradlew를 이용한 프로젝트 필드
-RUN ./gradlew clean build
+# Gradle 빌드 실행 및 결과 확인
+RUN ./gradlew clean build && ls build/libs
 
 # 애플리케이션 JAR 파일 복사
+# JAR 파일이 생성된 후 복사
 COPY build/libs/myselectshop-0.0.1-SNAPSHOT.jar app.jar
 
 # 애플리케이션 실행
