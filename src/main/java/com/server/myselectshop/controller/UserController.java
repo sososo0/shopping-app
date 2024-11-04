@@ -34,8 +34,12 @@ public class UserController {
     private final FolderService folderService;
     private final KakaoService kakaoService;
 
+    @Value("${kakao.api-key}")
+    private String KAKAO_API_KEY;
+
     @GetMapping("/user/login-page")
-    public String loginPage() {
+    public String loginPage(Model model) {
+        model.addAttribute("kakaoApiKey", KAKAO_API_KEY);
         return "login";
     }
 
