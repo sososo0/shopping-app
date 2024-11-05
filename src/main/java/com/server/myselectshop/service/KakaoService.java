@@ -38,12 +38,12 @@ public class KakaoService {
     @Value("${kakao.api-key}")
     private String KAKAO_REST_API_KEY;
 
+    @Value("${server.host}")
+    private String SERVER_HOST;
+
     public String kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getToken(code);
-        System.out.println("===================");
-        System.out.println(accessToken);
-        System.out.println("===================");
 
         // 2. 토큰으로 카카오 API 호출 : "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
         KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
@@ -73,8 +73,8 @@ public class KakaoService {
         // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
-        body.add("client_id", "dd9cfaf39b3212a8a6d2ad156ac45305");
-        body.add("redirect_uri", "http://localhost:8080/api/user/kakao/callback");
+        body.add("client_id", KAKAO_REST_API_KEY);
+        body.add("redirect_uri", SERVER_HOST + ":8080/api/user/kakao/callback");
         body.add("code", code);
 
         RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity

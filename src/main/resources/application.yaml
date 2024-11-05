@@ -1,6 +1,6 @@
 server:
   port: 8080
-  host: ${SERVER_IP}
+  host: ${SERVER_HOST}
 
 spring:
   config:
@@ -11,7 +11,7 @@ spring:
     name: myselectshop
 
   datasource:
-    url: jdbc:mysql://${SERVER_IP}:3306/shop
+    url: jdbc:mysql://${DB_HOST}:3306/shop
     username: ${DB_USER}
     password: ${DB_PW}
     driver-class-name: com.mysql.cj.jdbc.Driver
