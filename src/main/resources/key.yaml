@@ -7,3 +7,7 @@ admin:
 
 kakao:
   api-key: ${KAKAO_REST_API_KEY}
+
+jwt:
+  secret:
+    key: ${JWT_SECRET_KEY}
