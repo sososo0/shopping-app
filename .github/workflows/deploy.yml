@@ -23,7 +23,7 @@ jobs:
           distribution: "temurin"
 
       - name: Deploy to server
-        uses: appleboy/ssh-action@v0.1.3
+        uses: appleboy/ssh-action@master
         id: deploy
         with:
           host: ${{ secrets.HOST }}
