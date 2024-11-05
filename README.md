@@ -88,100 +88,126 @@ SERVER_HOST= # http 또는 https로 시작하는 서버 주소를 입력하세�
 
 구현된 주요 API 목록은 다음과 같습니다. 
 
-### Naver 
+<details>
+  <summary><span style="font-size: 1.5em;">Naver</span></summary>
+  <div markdown="1">
 
 - 상품 검색
 
-```
-GET /api/search?query=검색어
-```
+  ```
+  GET /api/search?query=검색어
+  ```
 
-### User 
+  </div>
+</details>
+
+<br>
+
+<details>
+  <summary><span style="font-size: 1.5em;">User</span></summary>
+  <div markdown="1">
 
 - 로그인 페이지 호출 
-
-```
-GET /api/user/login-page
-```
-
+    
+  ```
+  GET /api/user/login-page
+  ```
+    
 - 회원가입 페이지 호출 
-
-```
-GET /api/user/signup
-```
-
+    
+  ```
+  GET /api/user/signup
+  ```
+    
 - 회원가입 
-
-```
-POST /api/user/signup
-```
-
+    
+  ```
+  POST /api/user/signup
+  ```
+    
 - 회원 정보 요청 
-
-```
-GET /api/user-info
-```
-
+    
+  ```
+  GET /api/user-info
+  ```
+    
 - 카카오 소셜 로그인 인가 코드 처리 
+    
+  ```
+  GET /api/user/kakao/callback
+  ```
 
-```
-GET /api/user/kakao/callback
-```
+  </div>
+</details>
 
-### Product 
+<br>
+
+<details>
+  <summary><span style="font-size: 1.5em;">Product</span></summary>
+  <div markdown="1">
 
 - 관심 상품 조회하기
-
-```
-GET /api/products
-```
-
+    
+  ```
+  GET /api/products
+  ```
+    
 - 관심 상품 등록하기 
-
-```
-POST /api/products
-```
-
+    
+  ```
+  POST /api/products
+  ```
+    
 - 관심 상품의 희망 최저가 업데이트 
-
-```
-PUT /api/products/{id}
-```
-
+    
+  ```
+  PUT /api/products/{id}
+  ```
+    
 - admin 계정 모든 상품 조회 기능 
+    
+  ```
+  GET /api/admin/products
+  ```
 
-```
-GET /api/admin/products
-```
+  </div>
+</details>
 
-### Folder 
+<br>
 
+<details>
+  <summary><span style="font-size: 1.5em;">Folder</span></summary>
+  <div markdown="1">
+    
 - 폴더 전체 조회 
-
-```
-GET /api/folders
-```
-
+    
+  ```
+  GET /api/folders
+  ```
+    
 - 회원 폴더 생성 
-
-```
-POST /api/folders
-```
-
+    
+  ```
+  POST /api/folders
+  ```
+    
 - 회원 폴더 조회 
-
-```
-GET /api/user-folder
-```
-
+    
+  ```
+  GET /api/user-folder
+  ```
+    
 - 폴더 추가 
-
-```
-POST /api/products/{productId}/folder
-```
-
+    
+  ```
+  POST /api/products/{productId}/folder
+  ```
+    
 - 폴더 별 관심상품 조회 
+    
+  ```
+  GET /api/folders/{folderId}/products
+  ```
 
-```
-GET /api/folders/{folderId}/products
-```
+  </div>
+</details>
