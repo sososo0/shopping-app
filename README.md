@@ -6,7 +6,8 @@ MySelectShop은 키워드로 상품을 검색하고 관심 상품을 등록할 �
 ## System Overview 
 
 - 현재 프로젝트는 AWS EC2 인스턴스에서 Docker 컨테이너로 Spring Boot 웹 애플리케이션을 실행하고 있습니다. 
-- 데이터베이스는 AWS RDS에서 MySQL로 관리되고 있습니다.
+- 데이터베이스는 AWS RDS에서 MySQL로 관리합니다. 
+- GitHub Actions를 통해 코드를 관리합니다. 
 
 ## ERD 
 
