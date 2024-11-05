@@ -37,9 +37,13 @@ public class UserController {
     @Value("${kakao.api-key}")
     private String KAKAO_API_KEY;
 
+    @Value("${server.host}")
+    private String SERVER_HOST;
+
     @GetMapping("/user/login-page")
     public String loginPage(Model model) {
         model.addAttribute("kakaoApiKey", KAKAO_API_KEY);
+        model.addAttribute("serverHost", SERVER_HOST);
         return "login";
     }
 
