@@ -2,12 +2,9 @@ package com.server.myselectshop.controller;
 
 import com.server.myselectshop.dto.FolderRequestDto;
 import com.server.myselectshop.dto.FolderResponseDto;
-import com.server.myselectshop.exception.RestApiException;
 import com.server.myselectshop.security.UserDetailsImpl;
 import com.server.myselectshop.service.FolderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
